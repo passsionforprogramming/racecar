@@ -6,10 +6,10 @@ export default class Game {
         this.ctx = ctx;
         this.road = new Road(this);
         this.car = new Car(this);
-        // new InputHandler({
-        //     road: this.road,
-        //     car: this.car
-        // });
+        new InputHandler({
+            road: this.road,
+            car: this.car
+        });
     }
     updateUi(){
         this.road.updateUi();

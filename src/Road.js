@@ -12,6 +12,6 @@ export default class Road {
         this.ctx.drawImage(this.image, 0, this.verticalOffset);
         this.ctx.drawImage(this.image, 0, this.verticalOffset + 640);
         this.ctx.drawImage(this.image, 0, this.verticalOffset + 1280);
-        this.verticalOffset += 10;
+        this.verticalOffset += (this.game.car.getSpeed() / 10);
     }
 }
