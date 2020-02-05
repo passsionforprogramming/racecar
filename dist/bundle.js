@@ -97,14 +97,105 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Car; });
 class Car {
-    constructor(image, ctx){
-        this.ctx = ctx;
-        this.image = image;
+    constructor(game){
+        this.game = game;
+        this.ctx = game.ctx;
+        this.image = new Image();
+        this.image.src = './images/cars_racer.svg';
     }
 
     updateUi(){
-        this.ctx.drawImage(this.image, 0, 0, 221, 442, 225, 400, 33, 66);
+        this.ctx.drawImage(this.image, 0, 0, 221, 442, 225, 400, 44, 88);
         console.log("this is running");
+    }
+}
+
+/***/ }),
+
+/***/ "./src/Game.js":
+/*!*********************!*\
+  !*** ./src/Game.js ***!
+  \*********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
+/* harmony import */ var _Road__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Road */ "./src/Road.js");
+/* harmony import */ var _Car__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Car */ "./src/Car.js");
+/* harmony import */ var _InputHandler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InputHandler */ "./src/InputHandler.js");
+
+
+
+class Game {
+    constructor(ctx){
+        this.ctx = ctx;
+        this.road = new _Road__WEBPACK_IMPORTED_MODULE_0__["default"](this);
+        this.car = new _Car__WEBPACK_IMPORTED_MODULE_1__["default"](this);
+        // new InputHandler({
+        //     road: this.road,
+        //     car: this.car
+        // });
+    }
+    updateUi(){
+        this.road.updateUi();
+        this.car.updateUi();
+    }
+}
+
+/***/ }),
+
+/***/ "./src/InputHandler.js":
+/*!*****************************!*\
+  !*** ./src/InputHandler.js ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return InputHandler; });
+class InputHandler {
+    constructor(options){
+        this.road = options.road;
+        this.cart = options.car;
+    }
+
+    receiveInput(){
+        document.addEventListener('keydown', e => {
+            console.log(e.keyCode);
+        })
+    }
+}
+
+/***/ }),
+
+/***/ "./src/Road.js":
+/*!*********************!*\
+  !*** ./src/Road.js ***!
+  \*********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Road; });
+class Road {
+    constructor(game){
+        this.game = game;
+        this.ctx = this.game.ctx;
+        this.verticalOffset = -640;
+        this.image = new Image();
+        this.image.src = "./images/background-1.png";
+    }
+
+    updateUi(){
+        if (this.verticalOffset >= 0) this.verticalOffset = -640;
+        this.ctx.drawImage(this.image, 0, this.verticalOffset);
+        this.ctx.drawImage(this.image, 0, this.verticalOffset + 640);
+        this.ctx.drawImage(this.image, 0, this.verticalOffset + 1280);
+        this.verticalOffset += 10;
     }
 }
 
@@ -120,29 +211,27 @@ class Car {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Car__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Car */ "./src/Car.js");
+/* harmony import */ var _Game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Game */ "./src/Game.js");
+/* harmony import */ var _Road__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Road */ "./src/Road.js");
+
+
 
 const canvas = document.getElementById("race-game");
 const context = canvas.getContext("2d");
+const game = new _Game__WEBPACK_IMPORTED_MODULE_1__["default"](context);
 
-const road = new Image();
-let verticalOffset = -640;
-road.src = "./images/background-1.png";
-const carImage = new Image();
-carImage.src = "./images/cars_racer.svg";
-const car = new _Car__WEBPACK_IMPORTED_MODULE_0__["default"](carImage, context);
+// const road = new Image();
+// let verticalOffset = -640;
+// road.src = "./images/background-1.png";
+// const carImage = new Image();
+// carImage.src = "./images/cars_racer.svg";
+// const car = new Car(game);
+// const road = new Road(game);
 
-road.onload = () => {
 requestAnimationFrame(gameLoop);
-}
 
 function gameLoop(){
-    if (verticalOffset >= 0) verticalOffset = -640;
-    context.drawImage(road, 0, verticalOffset);
-    context.drawImage(road, 0, verticalOffset + 640);
-    context.drawImage(road, 0, verticalOffset + 1280);
-    verticalOffset += 10;
-    //context.drawImage(carImage, 0, 0, 221, 442, 225, 400, 33, 66);
-    car.updateUi(carImage, context);
+    game.updateUi();
     requestAnimationFrame(gameLoop);
 }
 
