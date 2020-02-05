@@ -1,0 +1,85 @@
+canvas {
+    background-color: black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.board-container {
+    position: absolute;
+    width: 640px;
+    height: 480px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.board {
+    position: relative;
+    width: inherit;
+    height: inherit;
+}
+
+.fuel {
+    color: white;
+    font-family: sans-serif;
+    font-weight: bold;
+    padding: .5em
+}
+
+.fuel-meter {
+    position: absolute;
+    left: 13%;
+    top: -15%;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    padding-right: .5em;
+}
+
+.level {
+    width: 55px;
+    height: 25px;
+    background-color: seagreen;
+}
+
+.time {
+    position: absolute;
+    right: 13%;
+    top: -15%;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+}
+
+.time-num, .time-text {
+    color: white;
+    font-family: sans-serif;
+    padding: .5em;
+}
+
+.speedometer {
+    position: absolute;
+    left: 13%;
+    top: -5%;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+}
+
+.speed, .mph, .miles, .miles-unit {
+    color: white;
+    font-family: sans-serif;
+    padding: .5em;
+}
+
+.miles-left {
+    position: absolute;
+    right: 13%;
+    top: -5%;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+}
+
