@@ -2,6 +2,10 @@ export default class Car {
     constructor(game){
         this.game = game;
         this.ctx = game.ctx;
+        this.dimensions = {
+            x: 44,
+            y: 88
+        }
         this.position = {
             x: 225,
             y: 450
@@ -40,6 +44,6 @@ export default class Car {
     }
 
     updateUi(){
-        this.ctx.drawImage(this.image, 0, 0, 221, 442, this.position.x, this.position.y, 44, 88);
+        this.ctx.drawImage(this.image, 0, 0, 221, 442, this.position.x, this.position.y, this.dimensions.x, this.dimensions.y);
     }
 }

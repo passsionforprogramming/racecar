@@ -100,6 +100,10 @@ class Car {
     constructor(game){
         this.game = game;
         this.ctx = game.ctx;
+        this.dimensions = {
+            x: 44,
+            y: 88
+        }
         this.position = {
             x: 225,
             y: 450
@@ -138,7 +142,49 @@ class Car {
     }
 
     updateUi(){
-        this.ctx.drawImage(this.image, 0, 0, 221, 442, this.position.x, this.position.y, 44, 88);
+        this.ctx.drawImage(this.image, 0, 0, 221, 442, this.position.x, this.position.y, this.dimensions.x, this.dimensions.y);
+    }
+}
+
+/***/ }),
+
+/***/ "./src/CrazyCar.js":
+/*!*************************!*\
+  !*** ./src/CrazyCar.js ***!
+  \*************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CrazyCar; });
+class CrazyCar {
+    //403 x 766
+    constructor(game){
+        this.game = game;
+        this.ctx = game.ctx
+        this.img = new Image();
+        this.img.src = `./images/${Math.floor(Math.random() * 4) + 1}.png`;
+        this.carWidth = 50;
+        this.carHeight = 95;
+        this.possiblePosX = [100, 150, 200, 250, 300, 350, 400];
+        this.pos = {
+            x: this.possiblePosX[Math.floor(Math.random() * 7)],
+            y: 10
+        }
+        this.speed = Math.floor(Math.random() * 11) + 2;
+    }
+
+    removeRandomCrazyCar(){
+        if (this.pos.y >= 640){
+            this.game.onComingCars.splice(this.game.onComingCars.indexOf(this), 1);
+        }
+    }
+
+    updateUi(){
+        this.ctx.drawImage(this.img, 0, 0, 403, 766, this.pos.x, this.pos.y, this.carWidth, this.carHeight);
+        this.pos.y += this.speed + (this.game.car.getSpeed() / 10);
+        this.removeRandomCrazyCar();
     }
 }
 
@@ -157,6 +203,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Road__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Road */ "./src/Road.js");
 /* harmony import */ var _Car__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Car */ "./src/Car.js");
 /* harmony import */ var _InputHandler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InputHandler */ "./src/InputHandler.js");
+/* harmony import */ var _CrazyCar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CrazyCar */ "./src/CrazyCar.js");
+
 
 
 
@@ -169,10 +217,36 @@ class Game {
             road: this.road,
             car: this.car
         });
+        this.onComingCars = [];
+        this.createRandomCrazyCars();
     }
+
+    createRandomCrazyCars(){
+        setInterval(() => {
+            const crazyCar = new _CrazyCar__WEBPACK_IMPORTED_MODULE_3__["default"](this);
+            this.onComingCars.push(crazyCar);
+        }, 5000);
+    }
+
+    updateOncomingCars(){
+        this.onComingCars.forEach(onComingCar => onComingCar.updateUi());
+    }
+
+    checkCollision(){
+        this.onComingCars.forEach(onComingCar => {
+            if ((onComingCar.pos.y >= this.car.position.y && onComingCar.pos.y <= (this.car.position.y + this.car.dimensions.y)) && (Math.abs(onComingCar.pos.x - this.car.position.x) <= this.car.dimensions.x)){
+                console.log("Collision");
+                return true;
+            }
+            return false;
+        })
+    }
+
     updateUi(){
         this.road.updateUi();
         this.car.updateUi();
+        this.updateOncomingCars();
+        this.checkCollision();
     }
 }
 
