@@ -15,7 +15,7 @@ const game = new Game(context);
 
 requestAnimationFrame(gameLoop);
 
-function gameLoop(){
-    game.updateUi();
+function gameLoop(timestamp){
+    game.updateUi(timestamp);
     requestAnimationFrame(gameLoop);
 }

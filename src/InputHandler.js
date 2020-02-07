@@ -3,6 +3,7 @@ export default class InputHandler {
         this.road = options.road;
         this.car = options.car;
         this.receiveInput();
+        this.brakeAudio = document.getElementById("brake");
     }
 
     receiveInput(){
@@ -13,6 +14,7 @@ export default class InputHandler {
                 break;
                 case 40: //down
                     this.car.setSpeed(this.car.getSpeed() - 5);
+                    this.brakeAudio.play();
                 break;
                 case 37: //left
                 this.car.moveLeft();
@@ -21,6 +23,16 @@ export default class InputHandler {
                 this.car.moveRight();
                 break;
             }
+
+            document.addEventListener("keyup", e => {
+                switch(e.keyCode){
+                    case 40: 
+                    this.brakeAudio.pause();
+                    break;
+                }
+            })
+                
+            
         })
     }
 }

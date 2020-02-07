@@ -9,44 +9,67 @@
     <script src="./dist/bundle.js" defer></script>
 </head>
 <body>
-    <canvas id="race-game" height="640" width="480"></canvas>
-    <div class="board-container">
-        <div  id="board" class="board">
-            <div class="fuel-meter">
-                <div class="fuel">
-                    FUEL
-                </div>
-                <div class="level-container">
-                    <div class="level">
+    <div class="media">
+        <audio id="accelerate" loop>
+            <source src="./sounds/accel.mp3">
+        </audio>
+        <audio id="brake" loop>
+            <source src="./sounds/tires_squal_loop.wav">
+        </audio>
 
+        <audio id="car-crash-sound">
+            <source src="./sounds/Car-crash-sound-effect.mp3">
+        </audio>
+
+    </div>
+   <div class="row">
+        <canvas id="race-game" height="640" width="480"></canvas>
+        <div class="board-container">
+            <div id="board" class="board">
+                <div class="fuel-meter">
+                    <div class="fuel">
+                        FUEL
+                    </div>
+                    <div class="level-container">
+                        <div class="level">
+        
+                        </div>
+                    </div>
+                </div>
+                <div class="time">
+                    <div class="time-text">
+                        TIME LAPS:
+                    </div>
+                    <div class="time-num">
+                        00:00:00
+                    </div>
+                </div>
+                <div class="speedometer">
+                    <div class="speed">
+                        0
+                    </div>
+                    <div class="mph">
+                        MPH
+                    </div>
+                </div>
+                <div class="miles-left">
+                    <div class="miles">
+                        7
+                    </div>
+                    <div class="miles-unit">
+                        Mi Left
+                    </div>
+                </div>
+                <div class="message">
+                    <div class="crash">
+                        <img class="accident-img" src="./images/accident.svg" alt="accident">
+                        <p class="crash-msg">You Lost. Hit Spacebar to try again.</p>
+                    </div>
+                    <div class="win">
                     </div>
                 </div>
             </div>
-            <div class="time">
-                <div class="time-text">
-                    TIME LAPS: 
-                </div>
-                <div class="time-num">
-                    00:00:00
-                </div>
-            </div>
-            <div class="speedometer">
-                <div class="speed">
-                    0
-                </div>
-                <div class="mph">
-                    MPH
-                </div>
-            </div>
-            <div class="miles-left">
-                <div class="miles">
-                    10
-                </div>
-                <div class="miles-unit">
-                    Mi Left
-                </div>
-            </div>
         </div>
-    </div>
+   </div>
 </body>
 </html>

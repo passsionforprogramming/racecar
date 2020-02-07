@@ -109,7 +109,7 @@ class Car {
             y: 450
         };
         this.speed = 0;
-        this.maxSpeed = 200;
+        this.maxSpeed = 270;
         this.image = new Image();
         this.image.src = './images/cars_racer.svg';
     }
@@ -140,6 +140,16 @@ class Car {
         this.position.x += 10;
         if (this.position.x >= 435) this.position.x = 435;
     }
+
+    reset(){
+        this.position = {
+            x: 225,
+            y: 450
+        };
+        this.setSpeed(0);
+    }
+
+    
 
     updateUi(){
         this.ctx.drawImage(this.image, 0, 0, 221, 442, this.position.x, this.position.y, this.dimensions.x, this.dimensions.y);
@@ -204,6 +214,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Car__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Car */ "./src/Car.js");
 /* harmony import */ var _InputHandler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InputHandler */ "./src/InputHandler.js");
 /* harmony import */ var _CrazyCar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CrazyCar */ "./src/CrazyCar.js");
+/* harmony import */ var _Stats__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Stats */ "./src/Stats.js");
+
+
 
 
 
@@ -211,21 +224,26 @@ __webpack_require__.r(__webpack_exports__);
 class Game {
     constructor(ctx){
         this.ctx = ctx;
+        this.paused = false;
         this.road = new _Road__WEBPACK_IMPORTED_MODULE_0__["default"](this);
         this.car = new _Car__WEBPACK_IMPORTED_MODULE_1__["default"](this);
+        this.stats = new _Stats__WEBPACK_IMPORTED_MODULE_4__["default"](this);
         new _InputHandler__WEBPACK_IMPORTED_MODULE_2__["default"]({
             road: this.road,
             car: this.car
         });
         this.onComingCars = [];
         this.createRandomCrazyCars();
+        this.accelerateRef = document.getElementById("accelerate");
+        this.crashSound = new Audio('./sounds/Car-crash-sound-effect.mp3');
     }
 
     createRandomCrazyCars(){
+        if (this.paused) return;
         setInterval(() => {
             const crazyCar = new _CrazyCar__WEBPACK_IMPORTED_MODULE_3__["default"](this);
             this.onComingCars.push(crazyCar);
-        }, 5000);
+        }, 2000);
     }
 
     updateOncomingCars(){
@@ -234,19 +252,51 @@ class Game {
 
     checkCollision(){
         this.onComingCars.forEach(onComingCar => {
-            if ((onComingCar.pos.y >= this.car.position.y && onComingCar.pos.y <= (this.car.position.y + this.car.dimensions.y)) && (Math.abs(onComingCar.pos.x - this.car.position.x) <= this.car.dimensions.x)){
+            if (((onComingCar.pos.y + onComingCar.carHeight) >= this.car.position.y && onComingCar.pos.y <= (this.car.position.y + this.car.dimensions.y)) && (Math.abs(onComingCar.pos.x - this.car.position.x) <= this.car.dimensions.x)){
                 console.log("Collision");
-                return true;
+                this.paused = true;
+                const crashDiv = document.querySelector(".crash");
+                crashDiv.classList.add("show");
+                this.accelerateRef.pause();
+                this.crashSound.play();
+                document.addEventListener("keydown", e => {
+                    this.reset(e);
+                })
             }
-            return false;
         })
     }
 
-    updateUi(){
+    winGame(){
+        this.paused = true;
+    }
+
+    reset(e){
+        if (e.keyCode !== 32) return;
+        this.onComingCars = [];
+        this.car.reset();
+        this.paused = false;
+        const crashDiv = document.querySelector(".crash");
+        crashDiv.classList.remove("show");
+        this.stats.reset();
+        this.accelerateRef.pause();
+    }
+
+    playAcceleration() {
+        if (this.car.getSpeed() > !this.accelerateRef.paused) {
+            this.accelerateRef.play();
+        } else if (this.car.getSpeed() === 0) {
+            this.accelerateRef.pause();
+        }
+    }
+
+    updateUi(timestamp){
+        if (this.paused) return;
         this.road.updateUi();
         this.car.updateUi();
         this.updateOncomingCars();
-        this.checkCollision();
+        this.playAcceleration();
+       this.checkCollision();
+       this.stats.updateUi(timestamp);
     }
 }
 
@@ -267,6 +317,7 @@ class InputHandler {
         this.road = options.road;
         this.car = options.car;
         this.receiveInput();
+        this.brakeAudio = document.getElementById("brake");
     }
 
     receiveInput(){
@@ -277,6 +328,7 @@ class InputHandler {
                 break;
                 case 40: //down
                     this.car.setSpeed(this.car.getSpeed() - 5);
+                    this.brakeAudio.play();
                 break;
                 case 37: //left
                 this.car.moveLeft();
@@ -285,6 +337,16 @@ class InputHandler {
                 this.car.moveRight();
                 break;
             }
+
+            document.addEventListener("keyup", e => {
+                switch(e.keyCode){
+                    case 40: 
+                    this.brakeAudio.pause();
+                    break;
+                }
+            })
+                
+            
         })
     }
 }
@@ -321,6 +383,62 @@ class Road {
 
 /***/ }),
 
+/***/ "./src/Stats.js":
+/*!**********************!*\
+  !*** ./src/Stats.js ***!
+  \**********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Stats; });
+class Stats {
+    constructor(game){
+        this.game = game;
+        this.timeDisplay = document.querySelector(".time-num");
+        this.startTime = Date.now();
+        this.lastTime = Date.now();
+        this.totalDistance = 7;
+        this.distanceDriven = 0;
+        this.milesLeftDisplay = document.querySelector(".miles");
+    }
+
+    setTimeElapsed(){
+        const timeElapsed = Date.now() - this.startTime;
+        const time = new Date(timeElapsed);
+        const minutes = time.getMinutes();
+        const seconds = time.getSeconds();
+        const milliseconds = Math.floor(time.getMilliseconds() / 10);
+        this.timeDisplay.innerHTML = `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}:${milliseconds}`;
+    }
+
+    setMiLeft(timestamp){
+        let currentTime = Date.now();
+        let deltaTime = currentTime - this.lastTime;
+        
+        const test = new Date(timestamp).getSeconds();
+        //console.log(test);
+        if (deltaTime >= 1000){
+            this.lastTime = currentTime;
+            let velocityPerSecond = this.game.car.getSpeed() / 36000;
+            this.distanceDriven += velocityPerSecond;
+            this.milesLeftDisplay.innerHTML = (this.totalDistance - this.distanceDriven).toFixed(2);
+        }
+    }
+
+    reset(){
+        this.startTime = Date.now();
+    }
+
+    updateUi(timestamp){
+        this.setTimeElapsed(timestamp);
+        this.setMiLeft(timestamp);
+    }
+}
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -350,8 +468,8 @@ const game = new _Game__WEBPACK_IMPORTED_MODULE_1__["default"](context);
 
 requestAnimationFrame(gameLoop);
 
-function gameLoop(){
-    game.updateUi();
+function gameLoop(timestamp){
+    game.updateUi(timestamp);
     requestAnimationFrame(gameLoop);
 }
 

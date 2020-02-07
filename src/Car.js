@@ -11,7 +11,7 @@ export default class Car {
             y: 450
         };
         this.speed = 0;
-        this.maxSpeed = 200;
+        this.maxSpeed = 270;
         this.image = new Image();
         this.image.src = './images/cars_racer.svg';
     }
@@ -42,6 +42,16 @@ export default class Car {
         this.position.x += 10;
         if (this.position.x >= 435) this.position.x = 435;
     }
+
+    reset(){
+        this.position = {
+            x: 225,
+            y: 450
+        };
+        this.setSpeed(0);
+    }
+
+    
 
     updateUi(){
         this.ctx.drawImage(this.image, 0, 0, 221, 442, this.position.x, this.position.y, this.dimensions.x, this.dimensions.y);

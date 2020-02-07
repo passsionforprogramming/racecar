@@ -83,3 +83,35 @@ canvas {
     align-items: center;
 }
 
+.crash {
+    position: absolute;
+    background-color: rgb(218, 208, 208, .9);
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    left: 17%;
+    top: 30%;
+    display: none;
+}
+
+.show {
+    display: flex;
+}
+
+.crash-msg {
+    font-family: sans-serif;
+    font-size: 21px;
+    font-weight: bold;
+    color: red
+}
+
+.accident-img {
+    width: 100px;
+    height: 100px;
+}
+
+.accelerate {
+    display: none;
+}
+
