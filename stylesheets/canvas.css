@@ -141,3 +141,29 @@ canvas {
     color: seagreen;
 }
 
+body {
+    background-color: #f44336;
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.game-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.compete {
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.zombie-img {
+}

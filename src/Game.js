@@ -35,7 +35,7 @@ export default class Game {
         setInterval(() => {
             const crazyCar = new CrazyCar(this);
             this.onComingCars.push(crazyCar);
-        }, 10000);
+        }, 3000);
     }
 
     renderBullets(){

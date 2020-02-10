@@ -281,6 +281,7 @@ class Car {
         this.image.src = './images/cars_racer.svg';
         this.populateBullets();
         this.ammoDisplay = document.querySelector(".level");
+        this.gunSound = new Audio("./sounds/gun_sound.wav");
     }
 
     populateBullets(){
@@ -295,6 +296,7 @@ class Car {
             bullet.pos.x = this.position.x;
             this.game.bullets.push(bullet);
         }
+        this.gunSound.play();
     }
 
     setSpeed(speed){
@@ -515,7 +517,7 @@ class Game {
         setInterval(() => {
             const crazyCar = new _CrazyCar__WEBPACK_IMPORTED_MODULE_3__["default"](this);
             this.onComingCars.push(crazyCar);
-        }, 10000);
+        }, 3000);
     }
 
     renderBullets(){

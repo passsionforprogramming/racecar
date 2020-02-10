@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Race Car</title>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,500&family=Cardo:400,700|Oswald" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./stylesheets/canvas.css">
     <script src="./dist/bundle.js" defer></script>
 </head>
@@ -23,6 +24,13 @@
 
     </div>
    <div class="row">
+       <div class="info-col">
+        <div class="game-title">
+            <p>Race Car</p>
+        </div>
+           <p class="compete">CAN YOU SURVIVE</p>
+           <p class="compete">THE ULTIMATE RACE?</p>
+       </div>
         <canvas id="race-game" height="640" width="480"></canvas>
         <div class="board-container">
             <div id="board" class="board">
@@ -71,6 +79,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="zombie">
+            <img class="zombie-img" src="./images/walk/go_1.png" >
         </div>
    </div>
 </body>

@@ -18,6 +18,7 @@ export default class Car {
         this.image.src = './images/cars_racer.svg';
         this.populateBullets();
         this.ammoDisplay = document.querySelector(".level");
+        this.gunSound = new Audio("./sounds/gun_sound.wav");
     }
 
     populateBullets(){
@@ -32,6 +33,7 @@ export default class Car {
             bullet.pos.x = this.position.x;
             this.game.bullets.push(bullet);
         }
+        this.gunSound.play();
     }
 
     setSpeed(speed){
