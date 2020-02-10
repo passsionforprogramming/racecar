@@ -4,6 +4,7 @@ export default class InputHandler {
         this.car = options.car;
         this.receiveInput();
         this.brakeAudio = document.getElementById("brake");
+        this.bullet = options.bullet;
     }
 
     receiveInput(){
@@ -22,6 +23,10 @@ export default class InputHandler {
                 case 39: //right
                 this.car.moveRight();
                 break;
+                case 32:
+                case 13:
+                    this.car.shoot();
+                    break;
             }
 
             document.addEventListener("keyup", e => {

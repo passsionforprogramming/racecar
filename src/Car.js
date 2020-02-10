@@ -1,3 +1,4 @@
+import Bullet from './Bullet';
 export default class Car {
     constructor(game){
         this.game = game;
@@ -10,19 +11,34 @@ export default class Car {
             x: 225,
             y: 450
         };
+        this.bullets = [];
         this.speed = 0;
         this.maxSpeed = 270;
         this.image = new Image();
         this.image.src = './images/cars_racer.svg';
+        this.populateBullets();
+        this.ammoDisplay = document.querySelector(".level");
+    }
+
+    populateBullets(){
+        for (let i = 0; i < 100; i++){
+            this.bullets.push(new Bullet(this.game, this));
+        }
+    }
+
+    shoot(){
+        if (this.bullets.length > 0){
+            let bullet = this.bullets.pop();
+            bullet.pos.x = this.position.x;
+            this.game.bullets.push(bullet);
+        }
     }
 
     setSpeed(speed){
         if (speed >= this.maxSpeed){
-            console.log("Maxspeed hit");
             this.speed = this.maxSpeed;
         } else if (speed <= 0){
             this.speed = 0;
-            console.log("This is the speed", this.speed);
         } else {
             this.speed = speed;
         }
@@ -34,12 +50,12 @@ export default class Car {
     }
 
     moveLeft(){
-        this.position.x -= 10;
+        this.position.x -= 20;
         if (this.position.x <= 150) this.position.x = 150;
     }
 
     moveRight(){
-        this.position.x += 10;
+        this.position.x += 20;
         if (this.position.x >= 435) this.position.x = 435;
     }
 
@@ -51,9 +67,14 @@ export default class Car {
         this.setSpeed(0);
     }
 
+    renderAmmo(){
+        this.ammoDisplay.innerHTML = this.bullets.length.toString();
+    }
+
     
 
     updateUi(){
         this.ctx.drawImage(this.image, 0, 0, 221, 442, this.position.x, this.position.y, this.dimensions.x, this.dimensions.y);
+        this.renderAmmo();
     }
 }
