@@ -840,8 +840,8 @@ class Zombie {
     }
 
     updateUi(){
+        this.ctx.drawImage(this.img, 0, 0, this.width, this.height, this.pos.x, this.pos.y, 50, 78);
         this.animateWalk();
-        this.ctx.drawImage(this.img, 0, 0, this.width, this.height, this.pos.x, this.pos.y, 50, 78)
     }
 }
 
