@@ -139,7 +139,7 @@ export default class Game {
     }
 
     playAcceleration() {
-        if (this.car.getSpeed() > !this.accelerateRef.paused) {
+        if (this.car.getSpeed() > 0 && !this.accelerateRef.paused) {
             this.accelerateRef.play();
         } else if (this.car.getSpeed() === 0) {
             this.accelerateRef.pause();
