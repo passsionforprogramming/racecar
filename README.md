@@ -20,7 +20,7 @@ Racecar is all about beating your previous race time while overcoming the onslau
    The app will have a single screen. The user will control the game using keyboard up, down, left, right arrows. Game Controlls will also include, Start, Stop, and Reset buttons. There will be a car that the user is driving and the background will scroll and change as the car progresses forward. There will also be oncoming cars. The user will be able to see their time at the top and will also see when they have crossed the finish line.
    
    ![alt text](https://partybnb-seeder.s3.us-east-2.amazonaws.com/racecar.PNG)
-   ![alt text](https://partybnb-seeder.s3.us-east-2.amazonaws.com/racecar3.PNG)
+   ![alt text](https://partybnb-seeder.s3.us-east-2.amazonaws.com/racecar3.png)
    
    
  # Architecture and Technologies
@@ -35,7 +35,7 @@ Racecar is all about beating your previous race time while overcoming the onslau
  * Stats
  * Zombie
  
- ![alt text](https://partybnb-seeder.s3.us-east-2.amazonaws.com/racecar4.PNG)
+ ![alt text](https://partybnb-seeder.s3.us-east-2.amazonaws.com/racecar4.png)
  
  # Implemnation Timeline
  Day 1: Create Canvas Element, Submit project proposal, set up necessary classes, and begin car class. Find license free assets for car images, and road background. Create game loop for animation. Implement Game Start.
